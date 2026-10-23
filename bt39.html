@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài tập 39 - LTW JavaScript</title>
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --secondary-color: #6c757d;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin-bottom: 5px;
+    }
+
+    .user-info {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    nav {
+      background-color: #343a40;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    nav ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 14px 20px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: var(--primary-color);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .exercise-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
+      scroll-margin-top: 70px;
+    }
+
+    .exercise-card h2 {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+
+    /* Input & Button Styles */
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result-box {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      font-weight: bold;
+      word-break: break-all;
+    }
+
+    /* TK5: Accordion */
+    .accordion-header {
+      background-color: #e2e3e5;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      user-select: none;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background-color: #f1f3f5;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .accordion-content.active {
+      max-height: 200px; /* Độ cao đủ hiển thị nội dung */
+    }
+
+    .accordion-inner {
+      padding: 15px;
+    }
+
+    /* K4: Phân trang */
+    .pagination-list {
+      list-style: none;
+      margin-bottom: 15px;
+    }
+
+    .pagination-list li {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination-buttons button.active {
+      background-color: #28a745;
+    }
+
+    /* K6: Di chuyển khối DIV */
+    .box-container {
+      height: 220px;
+      border: 2px dashed #ccc;
+      position: relative;
+      overflow: hidden;
+      background-color: #fafafa;
+    }
+
+    #movable-box {
+      width: 50px;
+      height: 50px;
+      background-color: #dc3545;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      position: absolute;
+      left: 50%;
+      top: 85px;
+      transform: translateX(-50%);
+      transition: top 0.1s linear;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #343a40;
+      color: white;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER: THÔNG TIN SINH VIÊN -->
+  <header>
+    <h1>BÀI TẬP 39 - LTW JAVASCRIPT</h1>
+    <div class="user-info">
+      <p>Họ và tên: <strong>[Lê Hoàng Phúc]</strong> | MSSV: <strong>[231A010425]</strong></p>
+      <p>Lớp: <strong>[Mã lớp]</strong> | Trường Đại học Văn Hiến (VHU)</p>
+    </div>
+  </header>
+
+  <!-- MENU ĐIỀU HƯỚNG MENU TRỎ ĐẾN KẾT QUẢ 6 BÀI TẬP -->
+  <nav>
+    <ul>
+      <li><a href="#tk5">Bài TK5</a></li>
+      <li><a href="#tk7">Bài TK7</a></li>
+      <li><a href="#tk8">Bài TK8</a></li>
+      <li><a href="#k4">Bài K4</a></li>
+      <li><a href="#k6">Bài K6</a></li>
+      <li><a href="#k8">Bài K8</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- BÀI TK5: ACCORDION ĐƠN GIẢN -->
+    <section id="tk5" class="exercise-card">
+      <h2>Bài TK5: Accordion đơn giản</h2>
+      <p style="margin-bottom: 10px;">Bấm vào tiêu đề bên dưới để ẩn/hiện nội dung:</p>
+      <div class="accordion-header" onclick="toggleAccordion()">
+        ▶ Tiêu đề Accordion (Bấm vào đây)
+      </div>
+      <div class="accordion-content" id="accordionContent">
+        <div class="accordion-inner">
+          Đây là nội dung ẩn bên trong Accordion. Khi bấm vào tiêu đề, phần nội dung này trượt lên/xuống mượt mà bằng CSS transition và `classList.toggle()`.
+        </div>
+      </div>
+    </section>
+
+    <!-- BÀI TK7: TẠO CHUỖI NGẪU NHIÊN -->
+    <section id="tk7" class="exercise-card">
+      <h2>Bài TK7: Tạo chuỗi mật khẩu ngẫu nhiên</h2>
+      <p>Tạo mật khẩu ngẫu nhiên dài 8 ký tự (chữ cái thường và số):</p>
+      <br>
+      <button onclick="generateRandomPassword()">Tạo mật khẩu</button>
+      <div class="result-box" id="tk7Result">Kết quả sẽ hiển thị ở đây...</div>
+    </section>
+
+    <!-- BÀI TK8: CHUYỂN ĐỔI MÀU HEX SANG RGB -->
+    <section id="tk8" class="exercise-card">
+      <h2>Bài TK8: Chuyển đổi màu Hex sang RGB</h2>
+      <label for="hexInput">Nhập mã Hex (Ví dụ: #FF0000 hoặc #00ffcc):</label>
+      <input type="text" id="hexInput" placeholder="#FF0000" value="#FF0000">
+      <button onclick="handleHexToRgb()">Chuyển đổi</button>
+      <div class="result-box" id="tk8Result">Kết quả: rgb(255, 0, 0)</div>
+    </section>
+
+    <!-- BÀI K4: PHÂN TRANG DANH SÁCH -->
+    <section id="k4" class="exercise-card">
+      <h2>Bài K4: Phân Trang Danh Sách (50 mục)</h2>
+      <ul class="pagination-list" id="paginatedList"></ul>
+      <div class="pagination-buttons" id="paginationNav"></div>
+    </section>
+
+    <!-- BÀI K6: XỬ LÝ SỰ KIỆN BÀN PHÍM -->
+    <section id="k6" class="exercise-card">
+      <h2>Bài K6: Xử Lý Sự Kiện Bàn Phím (Phím mũi tên)</h2>
+      <p style="margin-bottom: 10px;">
+        <em>Hướng dẫn: Bấm trực tiếp các phím mũi tên <strong>LÊN</strong> / <strong>XUỐNG</strong> trên bàn phím để di chuyển khối màu đỏ.</em>
+      </p>
+      <div class="box-container">
+        <div id="movable-box">BOX</div>
+      </div>
+    </section>
+
+    <!-- BÀI K8: TÍNH CHỈ SỐ BMI VÀ PHÂN LOẠI -->
+    <section id="k8" class="exercise-card">
+      <h2>Bài K8: Tính Chỉ Số BMI và Phân Loại</h2>
+      <label for="weightInput">Cân nặng (kg):</label>
+      <input type="number" id="weightInput" placeholder="Ví dụ: 60" step="0.1">
+
+      <label for="heightInput">Chiều cao (mét):</label>
+      <input type="number" id="heightInput" placeholder="Ví dụ: 1.70" step="0.01">
+
+      <button onclick="calculateBMI()">Tính BMI</button>
+      <div class="result-box" id="k8Result">Chưa có dữ liệu tính toán.</div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Bài tập Lập trình Web - GV: TanNQ</p>
+  </footer>
+
+  <!-- SCRIPT XỬ LÝ CHỨC NĂNG CÁC BÀI TẬP -->
+  <script>
+    /* ========================================================
+       BÀI TK5: ACCORDION ĐƠN GIẢN
+       ======================================================== */
+    function toggleAccordion() {
+      const content = document.getElementById('accordionContent');
+      content.classList.toggle('active');
+    }
+
+    /* ========================================================
+       BÀI TK7: TẠO CHUỖI NGẪU NHIÊN 8 KÝ TỰ (Chữ thường + Số)
+       ======================================================== */
+    function getRandomPassword(length = 8) {
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        password += chars[randomIndex];
+      }
+      return password;
+    }
+
+    function generateRandomPassword() {
+      const pwd = getRandomPassword(8);
+      document.getElementById('tk7Result').innerText = "Mật khẩu tạo ra: " + pwd;
+    }
+
+    /* ========================================================
+       BÀI TK8: CHUYỂN ĐỔI MÀU HEX SANG RGB
+       ======================================================== */
+    function hexToRgb(hex) {
+      // Loại bỏ ký tự # nếu có
+      hex = hex.replace(/^#/, '');
+
+      // Nếu là định dạng viết tắt (3 ký tự), nhân đôi từng ký tự (ví dụ: #F00 -> #FF0000)
+      if (hex.length === 3) {
+        hex = hex.split('').map(char => char + char).join('');
+      }
+
+      if (hex.length !== 6) {
+        return null; // Mã màu không hợp lệ
+      }
+
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      if (isNaN(r) || isNaN(g) || isNaN(b)) {
+        return null;
+      }
+
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function handleHexToRgb() {
+      const hexValue = document.getElementById('hexInput').value.trim();
+      const rgbValue = hexToRgb(hexValue);
+      const resultElement = document.getElementById('tk8Result');
+
+      if (rgbValue) {
+        resultElement.innerText = `Giá trị RGB: ${rgbValue}`;
+        resultElement.style.color = '#333';
+      } else {
+        resultElement.innerText = 'Mã Hex không hợp lệ! Vui lòng kiểm tra lại (VD: #FF0000).';
+        resultElement.style.color = 'red';
+      }
+    }
+
+    /* ========================================================
+       BÀI K4: PHÂN TRANG DANH SÁCH (50 MỤC, 10 MỤC/TRANG)
+       ======================================================== */
+    const totalItems = 50;
+    const itemsPerPage = 10;
+    // Khởi tạo danh sách 50 item giả lập
+    const itemsList = Array.from({ length: totalItems }, (_, i) => `Mục dữ liệu thứ ${i + 1}`);
+
+    function renderPage(pageNumber) {
+      const listContainer = document.getElementById('paginatedList');
+      listContainer.innerHTML = '';
+
+      const startIndex = (pageNumber - 1) * itemsPerPage;
+      const pageItems = itemsList.slice(startIndex, startIndex + itemsPerPage);
+
+      pageItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        listContainer.appendChild(li);
+      });
+
+      renderPaginationButtons(pageNumber);
+    }
+
+    function renderPaginationButtons(activePage) {
+      const navContainer = document.getElementById('paginationNav');
+      navContainer.innerHTML = '';
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        if (i === activePage) {
+          btn.classList.add('active');
+        }
+        btn.onclick = () => renderPage(i);
+        navContainer.appendChild(btn);
+      }
+    }
+
+    // Khởi tạo hiển thị trang 1 ban đầu
+    renderPage(1);
+
+    /* ========================================================
+       BÀI K6: XỬ LÝ SỰ KIỆN BÀN PHÍM (MŨI TÊN LÊN/XUỐNG)
+       ======================================================== */
+    let currentTop = 85; // Vị trí px ban đầu
+    const boxStep = 15;   // Số px dịch chuyển mỗi lần bấm phím
+    const minTop = 0;
+    const maxTop = 170;  // Giới hạn trong khung chứa 220px - chiều cao khối 50px
+
+    window.addEventListener('keydown', function(event) {
+      // Chỉ kích hoạt khi di chuyển chuột gần khung hoặc thao tác trang
+      if (event.key === 'ArrowUp') {
+        event.preventDefault(); // Tránh cuộn trang web
+        currentTop = Math.max(minTop, currentTop - boxStep);
+        document.getElementById('movable-box').style.top = currentTop + 'px';
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault(); // Tránh cuộn trang web
+        currentTop = Math.min(maxTop, currentTop + boxStep);
+        document.getElementById('movable-box').style.top = currentTop + 'px';
+      }
+    });
+
+    /* ========================================================
+       BÀI K8: TÍNH CHỈ SỐ BMI VÀ PHÂN LOẠI
+       ======================================================== */
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weightInput').value);
+      const height = parseFloat(document.getElementById('heightInput').value);
+      const resultElement = document.getElementById('k8Result');
+
+      if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+        resultElement.innerText = 'Vui lòng nhập cân nặng và chiều cao hợp lệ!';
+        resultElement.style.color = 'red';
+        return;
+      }
+
+      const bmi = (weight / (height * height)).toFixed(2);
+      let category = '';
+
+      if (bmi < 18.5) {
+        category = 'Thiếu cân';
+      } else if (bmi >= 18.5 && bmi < 24.9) {
+        category = 'Bình thường';
+      } else {
+        category = 'Thừa cân';
+      }
+
+      resultElement.style.color = '#333';
+      resultElement.innerText = `Chỉ số BMI của bạn là: ${bmi} → Phân loại: ${category}`;
+    }
+  </script>
+</body>
+</html>
